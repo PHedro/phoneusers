@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from django.contrib.auth.hashers import make_password, check_password
 from django.test import TestCase
 
@@ -57,3 +59,10 @@ class TestConcreteUserSerializerTestCase(TestCase):
 
         self.assertNotEquals('testejoao', _user.password)
         self.assertTrue(_check)
+
+    def test_create_verifica_se_criou_token(self):
+        serializer = ConcreteUserSerializer(data=self.data)
+        serializer.is_valid()
+        _user = serializer.save()
+        self.assertIsNotNone(_user.token)
+        self.assertIsInstance(_user.token, UUID)

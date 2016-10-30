@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -17,7 +19,7 @@ class ConcreteUserSerializer(ModelSerializer):
             'name',
             'email',
             'password',
-            # 'token',
+            'token',
             'created_at',
             'updated_at',
             'phones'
@@ -37,6 +39,13 @@ class ConcreteUserSerializer(ModelSerializer):
             'last_name': last_name,
         })
         _user = ConcreteUser.objects.create(**validated_data)
+        if not _user.token:
+            tkn = uuid4()
+            while ConcreteUser.objects.filter(token=tkn).exists():
+                tkn = uuid4()
+            _user.token = tkn
+            _user.save()
+
         for _phone_data in phones_data:
             Phone.objects.create(user=_user, **_phone_data)
         return _user

@@ -27,6 +27,14 @@ class ConcreteUser(AbstractUser):
         blank=False
     )
 
+    token = models.CharField(
+        max_length=36,
+        null=True,
+        blank=True,
+        default='',
+        unique=True
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'password']
 
