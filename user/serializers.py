@@ -12,6 +12,8 @@ from user.models import ConcreteUser
 class ConcreteUserSerializer(ModelSerializer):
     phones = PhoneSerializer(many=True)
     name = serializers.CharField(required=True, max_length=30)
+    last_login = serializers.DateTimeField(read_only=True)
+    token = serializers.UUIDField(read_only=True)
 
     class Meta:
         model = ConcreteUser
@@ -22,7 +24,8 @@ class ConcreteUserSerializer(ModelSerializer):
             'token',
             'created_at',
             'updated_at',
-            'phones'
+            'phones',
+            'last_login'
         )
 
     def create(self, validated_data):
