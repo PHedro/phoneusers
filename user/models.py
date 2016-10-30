@@ -3,7 +3,18 @@ from django.db import models
 
 
 class ConcreteUser(AbstractUser):
-    email = models.EmailField(blank=False, unique=True)
+    username = models.CharField(
+        max_length=150,
+        unique=False,
+    )
+    email = models.EmailField(
+        null=False,
+        blank=False,
+        unique=True,
+        error_messages={
+            'unique': "Usuário com esse email já existe.",
+        },
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -16,7 +27,8 @@ class ConcreteUser(AbstractUser):
         blank=False
     )
 
-    REQUIRED_FIELDS = ['email', 'first_name', 'password']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'password']
 
     @property
     def name(self):
