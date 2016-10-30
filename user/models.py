@@ -3,6 +3,8 @@ from django.db import models
 
 
 class ConcreteUser(AbstractUser):
+    email = models.EmailField(blank=False, unique=True)
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         null=False,
