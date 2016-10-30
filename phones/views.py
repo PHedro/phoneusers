@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from phones.models import Phone
+from phones.serializers import PhoneSerializer
+
+
+class PhoneViewSet(viewsets.ModelViewSet):
+    serializer_class = PhoneSerializer
+    queryset = Phone.objects.all()

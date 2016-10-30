@@ -18,6 +18,7 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 
+from phones.views import PhoneViewSet
 from user.views import ConcreteUserViewSet
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
 
 router = DefaultRouter()
 router.register(r'users', ConcreteUserViewSet)
+router.register(r'phones', PhoneViewSet)
 
 urlpatterns += router.urls
