@@ -9,5 +9,4 @@ class PhoneSerializer(ModelSerializer):
         fields = (
             'ddd',
             'number',
-            'user'
         )
