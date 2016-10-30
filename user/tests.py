@@ -49,7 +49,6 @@ class TestConcreteUserSerializerTestCase(TestCase):
         self.assertTrue(_phone1_ok)
         self.assertTrue(_phone2_ok)
 
-
     def test_create_verifica_se_password_nao_e_plain_text(self):
         serializer = ConcreteUserSerializer(data=self.data)
         serializer.is_valid()
