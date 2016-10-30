@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from phones.models import Phone
@@ -8,12 +9,12 @@ from user.models import ConcreteUser
 
 class ConcreteUserSerializer(ModelSerializer):
     phones = PhoneSerializer(many=True)
+    name = serializers.CharField(required=True, max_length=30)
 
     class Meta:
         model = ConcreteUser
         fields = (
-            'first_name',
-            'last_name',
+            'name',
             'email',
             'password',
             # 'token',
@@ -23,10 +24,18 @@ class ConcreteUserSerializer(ModelSerializer):
         )
 
     def create(self, validated_data):
-        phones_data = validated_data.pop('phones')
-        password_plain = validated_data.pop('password')
+        phones_data = validated_data.pop('phones', [])
+        name = validated_data.pop('name', '')
+        splitted = name.split(' ')
+        first_name = splitted[0]
+        last_name = ' '.join(splitted[1:])
+        password_plain = validated_data.pop('password', '')
         _password = make_password(password=password_plain)
-        validated_data.update({'password': _password})
+        validated_data.update({
+            'password': _password,
+            'first_name': first_name,
+            'last_name': last_name,
+        })
         _user = ConcreteUser.objects.create(**validated_data)
         for _phone_data in phones_data:
             Phone.objects.create(user=_user, **_phone_data)

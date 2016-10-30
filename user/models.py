@@ -15,3 +15,10 @@ class ConcreteUser(AbstractUser):
     )
 
     REQUIRED_FIELDS = ['email', 'first_name', 'password']
+
+    @property
+    def name(self):
+        return '{first_name} {last_name}'.format(
+            first_name=self.first_name if self.first_name else '',
+            last_name=self.last_name if self.last_name else ''
+        )
