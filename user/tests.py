@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password, check_password
 from django.test import TestCase
 
 from phones.models import Phone
@@ -27,3 +28,22 @@ class TestConcreteUserSerializerTestCase(TestCase):
         self.assertEqual(initial_phone_count + 2, Phone.objects.count())
         self.assertEqual(_user.first_name, 'joão')
         self.assertEqual(_user.email, 'joao@a.com')
+
+    def test_create_verifica_se_password_nao_e_plain_text(self):
+        data = {
+            'first_name': 'joão',
+            'email': 'joao@a.com',
+            'password': 'testejoao',
+            'phones': [
+                {'ddd': '021', 'number': '987654321'},
+                {'ddd': '021', 'number': '987654320'},
+            ]
+        }
+
+        serializer = ConcreteUserSerializer(data=data)
+        serializer.is_valid()
+        _user = serializer.save()
+        _check = check_password('testejoao', _user.password)
+
+        self.assertNotEquals('testejoao', _user.password)
+        self.assertTrue(_check)
