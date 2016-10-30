@@ -14,4 +14,4 @@ class ConcreteUser(AbstractUser):
         blank=False
     )
 
-    REQUIRED_FIELDS = ['email', 'name', 'password']
+    REQUIRED_FIELDS = ['email', 'first_name', 'password']
