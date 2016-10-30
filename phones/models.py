@@ -1,7 +1,14 @@
+from django.conf import settings
 from django.db import models
 
 
 class Phone(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='phones'
+    )
+
     ddd = models.CharField(
         verbose_name='DDD',
         max_length=3,
